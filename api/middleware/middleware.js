@@ -1,9 +1,9 @@
 const Users = require('../users/users-model')
-const Posts = require('../posts/posts-model')
+
 
 function logger(req, res, next) {
   console.log(
-    `[${new Date().toISOString()}] ${req.method} to ${req.url} from ${req.get(
+    `[${new Date().toLocaleString()}] ${req.method} to ${req.originalUrl} from ${req.get(
       'Origin'
     )}`
   );
@@ -29,6 +29,7 @@ function validateUser(req, res, next) {
     if (!req.body.name || !req.body.name.trim()) {
       next({ status: 400, message: "missing required name field" });
     } else {
+      req.name = req.body.name.trim()
       next();
     }
   
@@ -38,6 +39,7 @@ function validatePost(req, res, next) {
   if (!req.body.text || !req.body.text.trim()) {
     next({ status: 400, message: "missing required text field" });
   } else {
+    req.text = req.body.text.trim()
     next();
   }
 }
